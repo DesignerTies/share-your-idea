@@ -1,20 +1,34 @@
-import { useUser } from "@auth0/nextjs-auth0";
-import { NextPage } from "next";
-import { useEffect, useState, useRef } from "react";
+import { HandlerError, useUser } from '@auth0/nextjs-auth0';
+import { NextPage } from 'next';
+import axios from 'axios';
+import { useEffect, useState, useRef } from 'react';
 
 const handleRoute = () => {
-  if (typeof window !== "undefined") {
-    window.location.assign("/");
+  if (typeof window !== 'undefined') {
+    window.location.assign('/');
   }
 };
 
-const formSubmit = async (): Promise<void> => {
-  console.log();
+const formSubmit = (nameVal: string, userId: any) => {
+  axios
+    .put('/api/handleRegistration', {
+      data: {
+        userName: nameVal,
+        userId: userId,
+      },
+    })
+    .then((response) => {
+      if (response.status == 200) {
+        handleRoute();
+      }
+    })
+    .catch((error) => console.log(error));
 };
 
 const Registration: NextPage = () => {
   const { user, error, isLoading } = useUser();
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState('');
+  const nameRef: any = useRef();
   const roleChange: any = useRef();
 
   if (isLoading) return <div>Loading</div>;
@@ -26,13 +40,13 @@ const Registration: NextPage = () => {
         <div>
           <form
             action=''
-            onSubmit={() => {
-              formSubmit();
+            onSubmit={(e) => {
+              e.preventDefault();
+              formSubmit(nameRef.current.value, user.sub);
             }}
           >
-            <input type='text' name='name' placeholder='name' />
+            <input type='text' placeholder='name' ref={nameRef} />
             <select
-              name='role-select'
               id=''
               ref={roleChange}
               onChange={() => setRole(roleChange.current.value)}
@@ -40,10 +54,10 @@ const Registration: NextPage = () => {
               <option value='Start-Up'>Start-Up</option>
               <option value='Investor'>Investor</option>
             </select>
-            {role === "Investor" && (
+            {role === 'Investor' && (
               <>
-                <input type='text' name='toInvest' placeholder='To invest' />
-                <input type='text' name='company' placeholder='company' />
+                <input type='text' placeholder='To invest' />
+                <input type='text' placeholder='company' />
               </>
             )}
             <input type='submit' />
@@ -51,7 +65,7 @@ const Registration: NextPage = () => {
         </div>
       );
     } else {
-      window.location.assign("/profile");
+      window.location.assign('/profile');
       return <div>niks..</div>;
     }
   } else {
