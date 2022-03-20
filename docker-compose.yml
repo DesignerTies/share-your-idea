@@ -1,0 +1,13 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: share-your-idea
+      POSTGRES_DATA: /var/lib/postgresql/data/postgres_data
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/pgdata
+    ports:
+      - "5454:5432"

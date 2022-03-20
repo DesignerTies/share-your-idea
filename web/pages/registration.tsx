@@ -1,17 +1,17 @@
-import { HandlerError, useUser } from '@auth0/nextjs-auth0';
-import { NextPage } from 'next';
-import axios from 'axios';
-import { useEffect, useState, useRef } from 'react';
+import { HandlerError, useUser } from "@auth0/nextjs-auth0";
+import { NextPage } from "next";
+import axios from "axios";
+import { useEffect, useState, useRef } from "react";
 
 const handleRoute = () => {
-  if (typeof window !== 'undefined') {
-    window.location.assign('/');
+  if (typeof window !== "undefined") {
+    window.location.assign("/");
   }
 };
 
 const formSubmit = (nameVal: string, userId: any) => {
   axios
-    .put('/api/handleRegistration', {
+    .put("/api/handleRegistration", {
       data: {
         userName: nameVal,
         userId: userId,
@@ -27,7 +27,7 @@ const formSubmit = (nameVal: string, userId: any) => {
 
 const Registration: NextPage = () => {
   const { user, error, isLoading } = useUser();
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState("");
   const nameRef: any = useRef();
   const roleChange: any = useRef();
 
@@ -54,7 +54,7 @@ const Registration: NextPage = () => {
               <option value='Start-Up'>Start-Up</option>
               <option value='Investor'>Investor</option>
             </select>
-            {role === 'Investor' && (
+            {role === "Investor" && (
               <>
                 <input type='text' placeholder='To invest' />
                 <input type='text' placeholder='company' />
@@ -65,7 +65,7 @@ const Registration: NextPage = () => {
         </div>
       );
     } else {
-      window.location.assign('/profile');
+      window.location.assign("/profile");
       return <div>niks..</div>;
     }
   } else {
