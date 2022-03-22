@@ -6,4 +6,8 @@
   .max-w-90 {
     max-width: 90%;
   }
+  /* i stands for important */
+  .mi-unset {
+    margin: unset !important;
+  }
 }

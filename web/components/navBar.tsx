@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const NavBar = ({ userName, userPicture }: any) => {
   return (
     <nav className='flex flex-row justify-between px-20 w-full bg-red-400'>
@@ -7,12 +9,14 @@ const NavBar = ({ userName, userPicture }: any) => {
         <li className='inline mx-2 text-blue-600'>Item-3</li>
       </ul>
 
-      <div className='flex flex-row items-center'>
+      <div className='flex flex-row items-center py-2'>
         <button className='mx-4'>&#43;</button>
-        <img
+        <Image
           src={userPicture!}
-          alt={"Profile pic of " + userName}
-          className='h-4/6 rounded-full'
+          height={50}
+          width={50}
+          alt={'Profile pic of ' + userName}
+          className='rounded-full'
         />
       </div>
     </nav>
