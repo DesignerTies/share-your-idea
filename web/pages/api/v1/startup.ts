@@ -1,7 +1,7 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import prisma from '../../../lib/prisma';
 
-export default (async function (req: any, res: any) {
+export default withApiAuthRequired(async function (req: any, res: any) {
   if (req.method === 'POST') {
     const title = req.body.title;
     const content = req.body.content;
