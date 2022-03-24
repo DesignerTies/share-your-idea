@@ -8,19 +8,26 @@ export default withApiAuthRequired(async function (req: any, res: any) {
     const authorId = req.body.userId;
     if (req.body.imageId) {
       const imageId = req.body.imageId;
-    }
-
-    try {
       const newIdea: object = await prisma.idea.create({
         data: {
           title: title,
           content: content,
           authorId: authorId,
+          imageId,
         },
       });
+
       res.send(newIdea);
-    } catch (error) {
-      res.send(error);
+    } else {
+      const newIdea: object = await prisma.idea.create({
+        data: {
+          title,
+          content,
+          authorId,
+        },
+      });
+
+      res.send(newIdea);
     }
   }
 });

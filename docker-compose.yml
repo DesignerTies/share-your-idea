@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   db:
     image: postgres
@@ -8,6 +8,6 @@ services:
       POSTGRES_DB: share-your-idea
       POSTGRES_DATA: /var/lib/postgresql/data/postgres_data
     volumes:
-      - ./postgres_data:/var/lib/postgresql/pgdata
+      - ./postgres_data:/var/lib/postgresql/data
     ports:
-      - "5454:5432"
+      - '5454:5432'
