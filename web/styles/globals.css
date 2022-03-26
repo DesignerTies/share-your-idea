@@ -10,4 +10,7 @@
   .mi-unset {
     margin: unset !important;
   }
+  .bg-modal {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 }

@@ -4,6 +4,6 @@ import prisma from '../../../lib/prisma';
 export default withApiAuthRequired(async function (req: any, res: any) {
   if (req.method === 'GET') {
     const allStartUps: object = await prisma.idea.findMany();
-    res.json(allStartUps);
+    res.json(JSON.stringify(allStartUps));
   }
 });
