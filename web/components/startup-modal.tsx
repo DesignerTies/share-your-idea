@@ -1,21 +1,26 @@
 import axios from 'axios';
 import { useState } from 'react';
 
+interface Data {
+  authorId: string;
+  title: string;
+  content: string;
+  imageId?: string;
+}
+
 const handleForm = async (
   event: any,
-  userId: string,
-  title: string,
-  content: string,
+  data: Data,
   allStartups: any[],
-  clickModal: any,
-  imageId?: string
+  clickModal: any
 ) => {
   event.preventDefault();
   axios
     .post('/api/v1/startup', {
-      userId,
-      title,
-      content,
+      userId: data.authorId,
+      title: data.title,
+      content: data.content,
+      imageId: data.imageId,
     })
     .then((response) => {
       allStartups.unshift(response.data);
@@ -44,7 +49,13 @@ const StartupModal = ({ clickModal, userId, allStartups }: any) => {
           action=''
           onSubmit={(e) => {
             e.preventDefault();
-            handleForm(event, userId, title, content, allStartups, clickModal);
+            const data = {
+              authorId: userId,
+              title,
+              content,
+              imageId,
+            };
+            handleForm(event, data, allStartups, clickModal);
           }}
           className='m-auto mt-20 flex flex-col max-w-prose'
         >

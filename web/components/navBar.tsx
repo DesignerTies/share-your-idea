@@ -6,13 +6,19 @@ const NavBar = ({ userName, userPicture, clickAddIdea }: any) => {
     <nav className='flex flex-row justify-between px-20 w-full bg-red-400'>
       <ul className='self-center'>
         <Link href='#'>
-          <li className='inline mx-2 text-blue-600'>Item-1</li>
+          <li className='inline mx-2 text-blue-600 hover:cursor-pointer'>
+            Item-1
+          </li>
         </Link>
         <Link href='#'>
-          <li className='inline mx-2 text-blue-600'>Item-2</li>
+          <li className='inline mx-2 text-blue-600 hover:cursor-pointer'>
+            Item-2
+          </li>
         </Link>
         <Link href='#'>
-          <li className='inline mx-2 text-blue-600'>Item-3</li>
+          <li className='inline mx-2 text-blue-600 hover:cursor-pointer'>
+            Item-3
+          </li>
         </Link>
       </ul>
 

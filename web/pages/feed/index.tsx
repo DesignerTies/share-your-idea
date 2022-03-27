@@ -1,11 +1,10 @@
-import NavBar from './../../components/navBar';
-import { GetServerSideProps, NextPage } from 'next';
-import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
-import Head from 'next/head';
-import { useState, useEffect, useLayoutEffect } from 'react';
-import StartupModal from '../../components/startup-modal';
 import axios from 'axios';
-import { start } from 'repl';
+import { NextPage } from 'next';
+import Head from 'next/head';
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useState, useEffect } from 'react';
+import NavBar from './../../components/navBar';
+import StartupModal from '../../components/startup-modal';
 
 const handleAuthRoute = () => {
   if (typeof window !== 'undefined') {
