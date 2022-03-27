@@ -2,7 +2,7 @@ import NavBar from './../../components/navBar';
 import { GetServerSideProps, NextPage } from 'next';
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import StartupModal from '../../components/startup-modal';
 import axios from 'axios';
 import { start } from 'repl';
@@ -13,17 +13,23 @@ const handleAuthRoute = () => {
   }
 };
 
-const Feed: NextPage = (params) => {
+const Feed: NextPage = () => {
   const { user, error, isLoading } = useUser();
   const [showModal, setShowModal] = useState<string>();
-  const [allStartups, setAllStartUps] = useState<object>();
+  const [allStartups, setAllStartUps] = useState<any[]>();
 
-  useEffect(async () => {
+  useEffect(() => {
     if (user) {
-      const response = await axios.get('/api/v1/all-startups');
-      setAllStartUps(response.data);
+      if (!allStartups) {
+        axios.get('/api/v1/all-startups').then((response) => {
+          setAllStartUps(response.data);
+          console.log(response.data);
+        });
+      } else {
+        return;
+      }
     }
-  });
+  }, [user, allStartups]);
 
   if (isLoading) return <div>Laden...</div>;
   if (error) return <div>{error}</div>;
@@ -46,6 +52,7 @@ const Feed: NextPage = (params) => {
             <StartupModal
               clickModal={() => setShowModal(undefined)}
               userId={user.sub}
+              allStartups={allStartups}
             />
           )}
           {allStartups && (

@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-const handleForm = (
+const handleForm = async (
   event: any,
   userId: string,
   title: string,
   content: string,
+  allStartups: any[],
+  clickModal: any,
   imageId?: string
 ) => {
   event.preventDefault();
@@ -15,11 +17,16 @@ const handleForm = (
       title,
       content,
     })
-    .then((response) => console.log(response))
-    .catch((error) => console.log(error));
+    .then((response) => {
+      allStartups.unshift(response.data);
+    })
+    .then(clickModal)
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
-const StartupModal = ({ clickModal, userId }: any) => {
+const StartupModal = ({ clickModal, userId, allStartups }: any) => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [imageId, setImageId] = useState<string>();
@@ -35,7 +42,10 @@ const StartupModal = ({ clickModal, userId }: any) => {
         </span>
         <form
           action=''
-          onSubmit={() => handleForm(event, userId, title, content)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleForm(event, userId, title, content, allStartups, clickModal);
+          }}
           className='m-auto mt-20 flex flex-col max-w-prose'
         >
           <input
