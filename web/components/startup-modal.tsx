@@ -32,7 +32,6 @@ const StartupModal = ({ clickModal, userId, allStartups }: any) => {
     clickModal: any
   ) => {
     event.preventDefault();
-
     setIsLoading(true);
 
     const form = event.target;
@@ -71,10 +70,10 @@ const StartupModal = ({ clickModal, userId, allStartups }: any) => {
         allStartups.unshift(response.data);
         console.log(allStartups);
       })
+      .then(clickModal)
       .catch((error) => {
         console.log(error);
-      }); // .then(clickModal)
-
+      });
     setIsLoading(false);
   };
 
