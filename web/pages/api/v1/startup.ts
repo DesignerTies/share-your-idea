@@ -30,4 +30,15 @@ export default withApiAuthRequired(async function (req: any, res: any) {
       res.send(newIdea);
     }
   }
+
+  if (req.method === 'GET') {
+    const title = req.query.title;
+
+    const startUp = await prisma.idea.findUnique({
+      where: {
+        title,
+      },
+    });
+    res.send(startUp);
+  }
 });
