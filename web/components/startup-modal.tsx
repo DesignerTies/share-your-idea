@@ -11,7 +11,6 @@ interface Data {
 const StartupModal = ({ clickModal, userId, allStartups }: any) => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [imageId, setImageId] = useState<string>();
   const [imageSrc, setImageSrc] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -95,7 +94,6 @@ const StartupModal = ({ clickModal, userId, allStartups }: any) => {
                 authorId: userId,
                 title,
                 content,
-                imageId,
               };
               handleForm(event, data, allStartups, clickModal);
             }}

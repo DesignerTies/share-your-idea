@@ -5,6 +5,7 @@ import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { useState, useEffect } from 'react';
 import NavBar from './../../components/navBar';
 import StartupModal from '../../components/startup-modal';
+import Link from 'next/link';
 
 const handleAuthRoute = () => {
   if (typeof window !== 'undefined') {
@@ -58,7 +59,9 @@ const Feed: NextPage = () => {
             <>
               {allStartups.map((startup) => (
                 <div key={startup.id}>
-                  <h3>{startup.title}</h3>
+                  <Link href={`/feed/${startup.title}`}>
+                    <h1 className='hover:cursor-pointer'>{startup.title}</h1>
+                  </Link>
                   <span>{startup.content}</span>
                 </div>
               ))}
