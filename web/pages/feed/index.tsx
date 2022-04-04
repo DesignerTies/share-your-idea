@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import NavBar from './../../components/navBar';
 import StartupModal from '../../components/startup-modal';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const handleAuthRoute = () => {
   if (typeof window !== 'undefined') {
@@ -56,16 +57,19 @@ const Feed: NextPage = () => {
             />
           )}
           {allStartups && (
-            <>
+            <div className='flex flex-col items-center justify-center mt-8'>
               {allStartups.map((startup) => (
-                <div key={startup.id}>
-                  <Link href={`/feed/${startup.title}`}>
-                    <h1 className='hover:cursor-pointer'>{startup.title}</h1>
-                  </Link>
+                <div key={startup.id} className='mb-5 w-64'>
+                  {startup.imageId && (
+                    <Image src={startup.imageId} width={100} height={100} />
+                  )}
+                  <h1>
+                    <Link href={`/feed/${startup.title}`}>{startup.title}</Link>
+                  </h1>
                   <span>{startup.content}</span>
                 </div>
               ))}
-            </>
+            </div>
           )}
         </div>
       </>

@@ -1,11 +1,15 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps, NextPage } from 'next';
 import prisma from '../../lib/prisma';
+import Head from 'next/head';
 import Image from 'next/image';
 
 const FeedPost: NextPage = (props: any) => {
   return props.authorId ? (
     <>
+      <Head>
+        <title>{props.title}</title>
+      </Head>
       <div>
         <h1>{props.title}</h1>
         <p>{props.content}</p>

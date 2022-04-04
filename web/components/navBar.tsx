@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const NavBar = ({ userName, userPicture, clickAddIdea }: any) => {
   return (
-    <nav className='flex flex-row justify-between px-20 w-full bg-red-400'>
+    <nav className='flex flex-row justify-between px-20 w-full bg-red-400 sticky top-0 z-10'>
       <ul className='self-center'>
         <Link href='#'>
           <li className='inline mx-2 text-blue-600 hover:cursor-pointer'>
