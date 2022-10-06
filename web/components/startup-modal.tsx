@@ -7,18 +7,26 @@ interface Data {
   content: string;
   imageId?: string;
 }
+interface StartUp {
+  authorId: string;
+  content: string;
+  id: string;
+  imageId: string;
+  title: string;
+  error?: string;
+}
 
 const StartupModal = ({ clickModal, userId, allStartups }: any) => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [imageSrc, setImageSrc] = useState<any>();
+  const [imageSrc, setImageSrc] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleChange = (changeEvent: any) => {
     const reader = new FileReader();
 
     reader.onload = (onLoadEvent) => {
-      setImageSrc(onLoadEvent.target?.result);
+      setImageSrc(onLoadEvent.target?.result as string);
     };
 
     reader.readAsDataURL(changeEvent.target.files[0]);
@@ -27,7 +35,7 @@ const StartupModal = ({ clickModal, userId, allStartups }: any) => {
   const handleForm = async (
     event: any,
     data: Data,
-    allStartups: any[],
+    allStartups: StartUp[],
     clickModal: any
   ) => {
     event.preventDefault();

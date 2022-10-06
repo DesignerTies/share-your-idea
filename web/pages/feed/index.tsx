@@ -8,6 +8,15 @@ import StartupModal from '../../components/startup-modal';
 import Link from 'next/link';
 import Image from 'next/image';
 
+interface StartUp {
+  authorId: string;
+  content: string;
+  id: string;
+  imageId: string;
+  title: string;
+  error?: string;
+}
+
 const handleAuthRoute = () => {
   if (typeof window !== 'undefined') {
     window.location.assign('/api/auth/login');
@@ -17,7 +26,7 @@ const handleAuthRoute = () => {
 const Feed: NextPage = () => {
   const { user, error, isLoading } = useUser();
   const [showModal, setShowModal] = useState<string>();
-  const [allStartups, setAllStartUps] = useState<any[]>();
+  const [allStartups, setAllStartUps] = useState<StartUp[]>();
 
   useEffect(() => {
     if (user) {

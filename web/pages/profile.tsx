@@ -14,7 +14,7 @@ const handleRegistrationRoute = () => {
   }
 };
 
-function Profile(): any {
+function Profile() {
   const { user, isLoading } = useUser();
   const [primaryUserRole, setPrimaryUserRole] = useState('');
 

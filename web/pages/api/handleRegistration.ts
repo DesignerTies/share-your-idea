@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-const updateUser = (userId: string, userName: any) => {
+const updateUser = (userId: string, userName: string) => {
   return axios
     .patch(
       `https://share-your-idea.eu.auth0.com/api/v2/users/${userId}`,
@@ -9,7 +10,7 @@ const updateUser = (userId: string, userName: any) => {
       },
       {
         headers: {
-          authorization: "Bearer " + process.env.MANAGEMENT_API_TOKEN,
+          authorization: 'Bearer ' + process.env.MANAGEMENT_API_TOKEN,
         },
       }
     )
@@ -19,7 +20,10 @@ const updateUser = (userId: string, userName: any) => {
     .catch((error) => console.log(error));
 };
 
-export default async function handleRegistration(req: any, res: any) {
+export default async function handleRegistration(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const userName = req.body.data.userName;
   const userId = req.body.data.userId;
 
@@ -28,8 +32,8 @@ export default async function handleRegistration(req: any, res: any) {
   try {
     const response = await updateUser(userId, userName);
     res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.setHeader("Cache-Control", "max-age=0");
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 'max-age=0');
     res.end(JSON.stringify(response));
   } catch (error) {
     res.json(error);

@@ -4,7 +4,16 @@ import prisma from '../../lib/prisma';
 import Head from 'next/head';
 import Image from 'next/image';
 
-const FeedPost: NextPage = (props: any) => {
+interface Props {
+  authorId: string;
+  content: string;
+  id: string;
+  imageId: string;
+  title: string;
+  error?: string;
+}
+
+const FeedPost: NextPage<Props> = (props) => {
   return props.authorId ? (
     <>
       <Head>

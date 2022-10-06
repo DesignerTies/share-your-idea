@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const getUserRole = (userId: string) => {
   return axios
@@ -13,11 +14,14 @@ const getUserRole = (userId: string) => {
     .catch((error) => console.log(error));
 };
 
-export default async function handleUserRole(req: any, res: any) {
+export default async function handleUserRole(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const userId = req.query.userId;
 
   try {
-    const response = await getUserRole(userId);
+    const response = await getUserRole(userId as string);
 
     res.send(response);
   } catch (error) {

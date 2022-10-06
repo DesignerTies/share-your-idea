@@ -1,10 +1,10 @@
-import { useUser } from "@auth0/nextjs-auth0";
+import { useUser } from '@auth0/nextjs-auth0';
 
-function Landing(): JSX.Element | any {
+function Landing(): JSX.Element {
   const { user } = useUser();
 
   if (user) {
-    window.location.assign("/profile");
+    window.location.assign('/profile');
     return <div>Handeling route...</div>;
   } else {
     return (
