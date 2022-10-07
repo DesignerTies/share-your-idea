@@ -1,7 +1,7 @@
 import { HandlerError, useUser } from '@auth0/nextjs-auth0';
 import { NextPage } from 'next';
 import axios from 'axios';
-import { useEffect, useState, useRef, ReactElement } from 'react';
+import React, { useState, useRef } from 'react';
 
 const handleRoute = () => {
   if (typeof window !== 'undefined') {
@@ -28,7 +28,7 @@ const formSubmit = (nameVal: string, userId: string) => {
 const Registration: NextPage = () => {
   const { user, error, isLoading } = useUser();
   const [role, setRole] = useState('');
-  const nameRef: ReactElement<HTMLInputElement> = useRef(null);
+  const nameRef = useRef<HTMLInputElement>(null);
   const roleChange: any = useRef();
 
   if (isLoading) return <div>Loading</div>;
@@ -42,14 +42,10 @@ const Registration: NextPage = () => {
             action=''
             onSubmit={(e) => {
               e.preventDefault();
-              formSubmit(nameRef.current.value, user.sub!);
+              formSubmit(nameRef.current!.value, user.sub!);
             }}
           >
-            <input
-              type='text'
-              placeholder='name'
-              ref={nameRef as ReactElement<HTMLInputElement>}
-            />
+            <input type='text' placeholder='name' ref={nameRef} />
             <select
               id=''
               ref={roleChange}
