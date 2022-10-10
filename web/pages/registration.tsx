@@ -29,7 +29,7 @@ const Registration: NextPage = () => {
   const { user, error, isLoading } = useUser();
   const [role, setRole] = useState('');
   const nameRef = useRef<HTMLInputElement>(null);
-  const roleChange: any = useRef();
+  const roleChange = useRef<HTMLSelectElement>(null);
 
   if (isLoading) return <div>Loading</div>;
   if (error) return <div>{error}</div>;
@@ -49,7 +49,7 @@ const Registration: NextPage = () => {
             <select
               id=''
               ref={roleChange}
-              onChange={() => setRole(roleChange.current.value)}
+              onChange={() => setRole(roleChange.current!.value)}
             >
               <option value='Start-Up'>Start-Up</option>
               <option value='Investor'>Investor</option>

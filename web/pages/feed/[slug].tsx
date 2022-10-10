@@ -56,10 +56,10 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
       props:
         startUp.length !== 0
           ? {
-              authorId: startUp[0]?.authorId,
-              content: startUp[0]?.content,
-              id: startUp[0]?.id,
-              imageId: startUp[0]?.imageId,
+              authorId: startUp[0].authorId,
+              content: startUp[0].content,
+              id: startUp[0].id,
+              imageId: startUp[0].imageId,
               title: startUp[0]?.title,
             }
           : {

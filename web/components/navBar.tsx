@@ -1,21 +1,27 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const NavBar = ({ userName, userPicture, clickAddIdea }: any) => {
+interface Props {
+  userName: string;
+  userPicture: string;
+  clickAddIdea: () => void;
+}
+
+const NavBar: React.FC<Props> = (props) => {
   return (
     <nav className='flex flex-row justify-between px-20 w-full bg-red-400 sticky top-0 z-10'>
       <ul className='self-center'>
-        <Link href='#'>
+        <Link href='#' passHref>
           <li className='inline mx-2 text-blue-600 hover:cursor-pointer'>
             Item-1
           </li>
         </Link>
-        <Link href='#'>
+        <Link href='#' passHref>
           <li className='inline mx-2 text-blue-600 hover:cursor-pointer'>
             Item-2
           </li>
         </Link>
-        <Link href='#'>
+        <Link href='#' passHref>
           <li className='inline mx-2 text-blue-600 hover:cursor-pointer'>
             Item-3
           </li>
@@ -23,14 +29,17 @@ const NavBar = ({ userName, userPicture, clickAddIdea }: any) => {
       </ul>
 
       <div className='flex flex-row items-center py-2'>
-        <button className='mx-4 hover:cursor-pointer' onClick={clickAddIdea}>
+        <button
+          className='mx-4 hover:cursor-pointer'
+          onClick={props.clickAddIdea}
+        >
           &#43;
         </button>
         <Image
-          src={userPicture!}
+          src={props.userPicture!}
           height={50}
           width={50}
-          alt={'Profile pic of ' + userName}
+          alt={'Profile pic of ' + props.userName}
           className='rounded-full'
         />
       </div>

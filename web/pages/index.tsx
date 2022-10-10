@@ -1,6 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0';
+import { NextPage } from 'next';
 
-function Landing(): JSX.Element {
+const Landing: NextPage = () => {
   const { user } = useUser();
 
   if (user) {
@@ -18,6 +19,6 @@ function Landing(): JSX.Element {
       </div>
     );
   }
-}
+};
 
 export default Landing;
