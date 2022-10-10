@@ -1,13 +1,9 @@
 import { HandlerError, useUser } from '@auth0/nextjs-auth0';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import React, { useState, useRef } from 'react';
-
-const handleRoute = () => {
-  if (typeof window !== 'undefined') {
-    window.location.assign('/');
-  }
-};
+import { Role } from '../types';
 
 const formSubmit = (nameVal: string, userId: string) => {
   axios
@@ -17,17 +13,18 @@ const formSubmit = (nameVal: string, userId: string) => {
         userId: userId,
       },
     })
-    .then((response) => {
-      if (response.status == 200) {
-        handleRoute();
+    .then((res) => {
+      if (res.status == 200) {
+        window.location.assign('/');
       }
     })
-    .catch((error) => console.log(error));
+    .catch((err) => console.log(err));
 };
 
 const Registration: NextPage = () => {
+  const router = useRouter();
   const { user, error, isLoading } = useUser();
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState<Role>();
   const nameRef = useRef<HTMLInputElement>(null);
   const roleChange = useRef<HTMLSelectElement>(null);
 
@@ -49,7 +46,7 @@ const Registration: NextPage = () => {
             <select
               id=''
               ref={roleChange}
-              onChange={() => setRole(roleChange.current!.value)}
+              onChange={() => setRole(roleChange.current!.value as Role)}
             >
               <option value='Start-Up'>Start-Up</option>
               <option value='Investor'>Investor</option>
@@ -69,7 +66,7 @@ const Registration: NextPage = () => {
       return <div>niks..</div>;
     }
   } else {
-    handleRoute();
+    router.push('/');
     return <div>handeling route...</div>;
   }
 };

@@ -6,3 +6,5 @@ export interface StartUp {
   title: string;
   error?: string;
 }
+
+export type Role = 'Start-up' | 'Investor';

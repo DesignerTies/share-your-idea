@@ -1,7 +1,11 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
 
-export default withApiAuthRequired(async function (req: any, res: any) {
+export default withApiAuthRequired(async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === 'POST') {
     const title = req.body.title;
     const content = req.body.content;
@@ -16,7 +20,6 @@ export default withApiAuthRequired(async function (req: any, res: any) {
           imageId,
         },
       });
-
       res.send(newIdea);
     } else {
       const newIdea: object = await prisma.idea.create({
@@ -32,7 +35,7 @@ export default withApiAuthRequired(async function (req: any, res: any) {
   }
 
   if (req.method === 'GET') {
-    const title = req.query.title;
+    const title = req.query.title as string;
 
     const startUp = await prisma.idea.findUnique({
       where: {

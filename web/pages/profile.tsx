@@ -1,26 +1,21 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
-
-const handleAuthRoute = () => {
-  if (typeof window !== 'undefined') {
-    window.location.assign('/api/auth/login');
-  }
-};
-
-const handleRegistrationRoute = () => {
-  if (typeof window !== 'undefined') {
-    window.location.assign('/registration');
-  }
-};
+import { Role } from '../types';
 
 function Profile() {
+  const router = useRouter();
   const { user, isLoading } = useUser();
-  const [primaryUserRole, setPrimaryUserRole] = useState('');
+  const [primaryUserRole, setPrimaryUserRole] = useState<Role | undefined>();
 
   useEffect(() => {
-    if (user) {
+    if (user && user.email !== user.name) {
       const userId = user.sub;
+      try {
+      } catch (error) {
+        setPrimaryUserRole(undefined);
+      }
       axios
         .get(`/api/handleUserRole?userId=${userId}`)
         .then((response) => setPrimaryUserRole(response.data[0].name));
@@ -32,21 +27,21 @@ function Profile() {
   if (user) {
     console.log(user);
     if (user.email !== user.name) {
-      return primaryUserRole !== '' ? (
+      return primaryUserRole ? (
         <div className='flex h-52 flex-col'>
           <h1>{user.name}</h1>
           <h3>User role: {primaryUserRole}</h3>
           <a href='/api/auth/logout'>Log uit</a>
         </div>
       ) : (
-        <div>Laden...</div>
+        <div>Geen rol gevonden</div>
       );
     } else {
-      handleRegistrationRoute();
+      router.push('/registration');
       return <div>Handeling route...</div>;
     }
   } else {
-    handleAuthRoute();
+    router.push('/api/auth/login');
   }
 }
 

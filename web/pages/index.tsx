@@ -1,11 +1,13 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 const Landing: NextPage = () => {
   const { user } = useUser();
+  const router = useRouter();
 
   if (user) {
-    window.location.assign('/profile');
+    router.push('/profile');
     return <div>Handeling route...</div>;
   } else {
     return (

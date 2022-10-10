@@ -17,17 +17,19 @@ model Idea {
   title String @unique
   content String 
   imageId String?
+  author User @relation(fields: [authorId], references: [id])
   authorId String
 }
 
 model User {
-  id String @id
+  id String @id @default(cuid())
+  auth0Id String
   name String
   surName String
   username String
   email String @unique
   picture String
   primaryRole String
-  ideas String[]
+  ideas Idea[]
 }
 

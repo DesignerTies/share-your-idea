@@ -1,20 +1,14 @@
 import axios from 'axios';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { UserProfile, useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0';
 import { useState, useEffect } from 'react';
-import NavBar from '../../components/navBar';
+import NavBar from '../../components/NavBar';
 import StartupModal from '../../components/StartUpModal';
 import Link from 'next/link';
 import Image from 'next/image';
-import useApi from '../../hooks/useApi';
 import { StartUp } from '../../types';
-
-const handleAuthRoute = () => {
-  if (typeof window !== 'undefined') {
-    window.location.assign('/api/auth/login');
-  }
-};
+import { useRouter } from 'next/router';
 
 const Feed: NextPage = () => {
   const [showModal, setShowModal] = useState<string>();
@@ -22,6 +16,7 @@ const Feed: NextPage = () => {
   const [dataLoading, setDataLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>();
   const { user, error: userError, isLoading } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
@@ -81,7 +76,7 @@ const Feed: NextPage = () => {
       </>
     );
   } else {
-    handleAuthRoute();
+    router.push('/api/auth/login');
     return <div>Niet ingelogd...</div>;
   }
 };
