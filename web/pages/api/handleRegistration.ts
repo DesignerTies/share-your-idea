@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../lib/prisma';
+import { Role } from '../../types';
 
 const updateUser = (userId: string, userName: string) => {
   return axios
@@ -25,12 +27,10 @@ export default async function handleRegistration(
   res: NextApiResponse
 ) {
   const userName = req.body.data.userName;
-  const userId = req.body.data.userId;
-
-  console.log(userId);
+  const auth0UserId = req.body.data.auth0UserId;
 
   try {
-    const response = await updateUser(userId, userName);
+    const response = await updateUser(auth0UserId, userName);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Cache-Control', 'max-age=0');

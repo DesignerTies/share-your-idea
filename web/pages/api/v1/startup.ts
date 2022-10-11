@@ -46,11 +46,11 @@ export default withApiAuthRequired(async function (
   }
 
   if (req.method === 'GET') {
-    const title = req.query.title as string;
+    const id = req.query.id as string;
 
     const startUp = await prisma.idea.findUnique({
       where: {
-        title,
+        id,
       },
     });
     res.send(startUp);

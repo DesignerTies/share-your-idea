@@ -1,54 +1,69 @@
-import { HandlerError, useUser } from '@auth0/nextjs-auth0';
+import React, { useState, useRef } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useUser } from '@auth0/nextjs-auth0';
+import useDBUser from '../hooks/useDBUser';
 import axios from 'axios';
-import React, { useState, useRef } from 'react';
 import { Role } from '../types';
 
-const formSubmit = (nameVal: string, userId: string) => {
-  axios
-    .put('/api/handleRegistration', {
+const formSubmit = async (nameVal: string, auth0UserId: string, role: Role) => {
+  Promise.all([
+    axios.put('/api/handleRegistration', {
       data: {
         userName: nameVal,
-        userId: userId,
+        auth0UserId,
+        role,
       },
-    })
-    .then((res) => {
-      if (res.status == 200) {
-        window.location.assign('/');
-      }
-    })
-    .catch((err) => console.log(err));
+    }),
+    axios.post('/api/v1/create-db-user', {
+      data: {
+        userName: nameVal,
+        auth0UserId,
+        role,
+      },
+    }),
+  ])
+    .then((values) => console.log(values))
+    .catch((e) => console.log(e))
+    .finally(() => window.location.assign('/'));
 };
 
 const Registration: NextPage = () => {
   const router = useRouter();
   const { user, error, isLoading } = useUser();
+  const { dbUser, isLoading: dbUserLoading } = useDBUser();
   const [role, setRole] = useState<Role>();
   const nameRef = useRef<HTMLInputElement>(null);
   const roleChange = useRef<HTMLSelectElement>(null);
 
-  if (isLoading) return <div>Loading</div>;
+  if (isLoading || dbUserLoading) return <div>Loading</div>;
   if (error) return <div>{error}</div>;
 
   if (user) {
-    if (user.email === user.name) {
+    if (!dbUser) {
+      {
+        console.log(dbUser);
+      }
       return (
         <div>
           <form
             action=''
             onSubmit={(e) => {
               e.preventDefault();
-              formSubmit(nameRef.current!.value, user.sub!);
+              formSubmit(
+                nameRef.current!.value,
+                user.sub!,
+                roleChange.current!.value as Role
+              );
             }}
           >
             <input type='text' placeholder='name' ref={nameRef} />
             <select
-              id=''
+              required
               ref={roleChange}
               onChange={() => setRole(roleChange.current!.value as Role)}
             >
-              <option value='Start-Up'>Start-Up</option>
+              <option value='StartUp'>Start-Up</option>
               <option value='Investor'>Investor</option>
             </select>
             {role === 'Investor' && (
@@ -66,7 +81,7 @@ const Registration: NextPage = () => {
       return <div>niks..</div>;
     }
   } else {
-    router.push('/');
+    window.location.assign('/');
     return <div>handeling route...</div>;
   }
 };

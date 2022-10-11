@@ -7,4 +7,4 @@ export interface StartUp {
   error?: string;
 }
 
-export type Role = 'Start-up' | 'Investor';
+export type Role = 'StartUp' | 'Investor';
