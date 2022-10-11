@@ -1,6 +1,6 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps, NextPage } from 'next';
-import prisma from '../../lib/prisma';
+import prisma from '../../../lib/prisma';
 import Head from 'next/head';
 import Image from 'next/image';
 
@@ -21,7 +21,7 @@ const FeedPost: NextPage<Props> = (props) => {
       </Head>
       <div>
         <h1>{props.title}</h1>
-        <p>{props.content}</p>
+        <p className='whitespace-pre-line'>{props.content}</p>
         {props.imageId && (
           <Image
             src={props.imageId}
@@ -41,30 +41,26 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
   returnTo: '/api/auth/login',
 
   async getServerSideProps({ params }: any) {
-    const slug = params.slug;
+    const id = params.id;
 
-    const startUp = await prisma.idea.findMany({
+    const startUp = await prisma.idea.findUnique({
       where: {
-        title: {
-          contains: slug,
-          mode: 'insensitive',
-        },
+        id,
       },
     });
 
     return {
-      props:
-        startUp.length !== 0
-          ? {
-              authorId: startUp[0].authorId,
-              content: startUp[0].content,
-              id: startUp[0].id,
-              imageId: startUp[0].imageId,
-              title: startUp[0]?.title,
-            }
-          : {
-              error: 'Deze startup bestaat niet...',
-            },
+      props: startUp
+        ? {
+            authorId: startUp.authorId,
+            content: startUp.content,
+            id: startUp.id,
+            imageId: startUp.imageId,
+            title: startUp.title,
+          }
+        : {
+            error: 'Deze startup bestaat niet...',
+          },
     };
   },
 });

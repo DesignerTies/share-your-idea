@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
 import useUploadStartUp from '../hooks/useUploadStartUp';
+import Cross from './Cross';
 import { StartUp } from '../types';
 
 interface Data {
@@ -20,7 +20,7 @@ const StartupModal: React.FC<Props> = (props) => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [imageSrc, setImageSrc] = useState<string>();
-  const { handler: handleForm, isLoading } = useUploadStartUp();
+  const { handler: handleForm, isLoading, isError } = useUploadStartUp();
 
   const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -37,13 +37,8 @@ const StartupModal: React.FC<Props> = (props) => {
   return (
     <div className='flex items-center justify-center fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-modal'>
       <div className='bg-stone-300 p-5 w-5/6 h-5/6'>
-        <span
-          className='text-gray-400 float-right text-2xl font-bold hover:text-black hover:cursor-pointer focus:no-underline'
-          onClick={props.clickModal}
-        >
-          &times;
-        </span>
-        {!isLoading && (
+        <Cross click={props.clickModal} />
+        {!isLoading && !isError && (
           <form
             method='post'
             onSubmit={(e) => {
@@ -55,7 +50,6 @@ const StartupModal: React.FC<Props> = (props) => {
               };
               const allStartups = props.allStartups ?? [];
               const clickModal = props.clickModal;
-
               handleForm(event as unknown as ChangeEvent<HTMLFormElement>, {
                 data,
                 allStartups,
@@ -99,6 +93,11 @@ const StartupModal: React.FC<Props> = (props) => {
           </form>
         )}
         {isLoading && <div>Loading...</div>}
+        {isError && (
+          <>
+            <div>Er heeft zich een error plaatsgevonden... (zie console)</div>
+          </>
+        )}
       </div>
     </div>
   );

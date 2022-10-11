@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  StartUp
+  Investor
+}
+
 model Idea {
   id String @id @default(cuid()) 
   createdAt DateTime @default(now())
@@ -23,13 +28,12 @@ model Idea {
 
 model User {
   id String @id @default(cuid())
-  auth0Id String
+  auth0Id String @unique
   name String
-  surName String
   username String
   email String @unique
   picture String
-  primaryRole String
+  primaryRole Role
   ideas Idea[]
 }
 

@@ -9,28 +9,39 @@ export default withApiAuthRequired(async function (
   if (req.method === 'POST') {
     const title = req.body.title;
     const content = req.body.content;
-    const authorId = req.body.userId;
-    if (req.body.imageId) {
-      const imageId = req.body.imageId;
-      const newIdea: object = await prisma.idea.create({
-        data: {
-          title: title,
-          content: content,
-          authorId: authorId,
-          imageId,
-        },
-      });
-      res.send(newIdea);
-    } else {
-      const newIdea: object = await prisma.idea.create({
-        data: {
-          title,
-          content,
-          authorId,
-        },
-      });
+    const auth0Id = req.body.userId;
 
-      res.send(newIdea);
+    try {
+      const author = await prisma.user.findUnique({
+        where: {
+          auth0Id,
+        },
+      });
+      if (author) {
+        if (req.body.imageId) {
+          const imageId = req.body.imageId;
+          const newIdea: object = await prisma.idea.create({
+            data: {
+              title: title,
+              content: content,
+              imageId,
+              authorId: author.id,
+            },
+          });
+          res.send(newIdea);
+        } else {
+          const newIdea: object = await prisma.idea.create({
+            data: {
+              title,
+              content,
+              authorId: author.id,
+            },
+          });
+          res.send(newIdea);
+        }
+      }
+    } catch (error) {
+      res.send(error);
     }
   }
 

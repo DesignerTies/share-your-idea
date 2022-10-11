@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { StartUp } from '../../types';
 import { useRouter } from 'next/router';
+import truncateString from '../../utils/truncate';
 
 const Feed: NextPage = () => {
   const [showModal, setShowModal] = useState<string>();
@@ -24,7 +25,9 @@ const Feed: NextPage = () => {
     axios
       .get('/api/v1/all-startups')
       .then((res) => setAllStartups(res.data))
-      .catch((err) => setError(err))
+      .catch((err) => {
+        setError(err);
+      })
       .finally(() => setDataLoading(false));
   }, [user]);
 
@@ -65,9 +68,14 @@ const Feed: NextPage = () => {
                     />
                   )}
                   <h1>
-                    <Link href={`/feed/${startup.title}`}>{startup.title}</Link>
+                    <Link href={`/feed/idea/${startup.id}`}>
+                      {startup.title}
+                    </Link>
+                    {console.log(startup.content)}
                   </h1>
-                  <span>{startup.content}</span>
+                  <span className='whitespace-pre-line'>
+                    {truncateString(startup.content, 300)}
+                  </span>
                 </div>
               ))}
             </div>

@@ -20,6 +20,7 @@ const UPLOAD_URL =
 
 const useUploadStartUp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const handler = async (
     event: ChangeEvent<HTMLFormElement>,
@@ -62,12 +63,13 @@ const useUploadStartUp = () => {
         console.log(allStartups);
       })
       .then(clickModal)
-      .catch((error) => {
+      .catch((error: Error) => {
         console.log(error);
+        setIsError(true);
       });
     setIsLoading(false);
   };
-  return { handler, isLoading };
+  return { handler, isLoading, isError };
 };
 
 export default useUploadStartUp;
