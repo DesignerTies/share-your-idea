@@ -45,12 +45,6 @@ const Feed: NextPage = () => {
             <meta charSet='utf-8' />
           </Head>
           <div>
-            {/* clickAddIdea is a custom prop you can pass to click the 'add idea' button */}
-            {/* <NavBar
-              userName={dbUser?.username as string}
-              userPicture={dbUser?.picture as string}
-              clickAddIdea={() => setShowModal('show')}
-            /> */}
             <Nav clickAddIdea={() => setShowModal('show')} />
             {showModal && (
               <StartupModal
