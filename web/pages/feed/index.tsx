@@ -4,13 +4,12 @@ import Head from 'next/head';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useState, useEffect } from 'react';
 import NavBar from '../../components/NavBar';
+import Nav from '../../components/Nav';
 import StartupModal from '../../components/StartUpModal';
-import Link from 'next/link';
-import Image from 'next/image';
 import { StartUp } from '../../types';
 import { useRouter } from 'next/router';
-import truncateString from '../../utils/truncate';
 import useDBUser from '../../hooks/useDBUser';
+import List from '../../components/List';
 
 const Feed: NextPage = () => {
   const [showModal, setShowModal] = useState<string>();
@@ -47,11 +46,12 @@ const Feed: NextPage = () => {
           </Head>
           <div>
             {/* clickAddIdea is a custom prop you can pass to click the 'add idea' button */}
-            <NavBar
+            {/* <NavBar
               userName={dbUser?.username as string}
               userPicture={dbUser?.picture as string}
               clickAddIdea={() => setShowModal('show')}
-            />
+            /> */}
+            <Nav clickAddIdea={() => setShowModal('show')} />
             {showModal && (
               <StartupModal
                 clickModal={() => setShowModal(undefined)}
@@ -59,30 +59,7 @@ const Feed: NextPage = () => {
                 allStartups={allStartups}
               />
             )}
-            {allStartups && (
-              <div className='flex flex-col items-center justify-center mt-8'>
-                {allStartups.map((startup) => (
-                  <div key={startup.id} className='mb-5 w-64'>
-                    {startup.imageId && (
-                      <Image
-                        src={startup.imageId}
-                        alt={`${startup.title} thumbnail`}
-                        width={100}
-                        height={100}
-                      />
-                    )}
-                    <h1>
-                      <Link href={`/feed/idea/${startup.id}`}>
-                        {startup.title}
-                      </Link>
-                    </h1>
-                    <span className='whitespace-pre-line'>
-                      {truncateString(startup.content, 300)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
+            {allStartups && <List startUps={allStartups} />}
           </div>
         </>
       );

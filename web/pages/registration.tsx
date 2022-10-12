@@ -29,7 +29,6 @@ const formSubmit = async (nameVal: string, auth0UserId: string, role: Role) => {
 };
 
 const Registration: NextPage = () => {
-  const router = useRouter();
   const { user, error, isLoading } = useUser();
   const { dbUser, isLoading: dbUserLoading } = useDBUser();
   const [role, setRole] = useState<Role>();
