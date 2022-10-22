@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
+import useDBUser from '../hooks/useDBUser';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -15,7 +16,12 @@ const classNames = (...classes: string[]) => {
 };
 
 const Nav: React.FC<Props> = (props) => {
-  return (
+  const { dbUser, isError, isLoading } = useDBUser();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError && !dbUser) return <div>Error gevonden</div>;
+
+  return dbUser ? (
     <Disclosure as='nav' className='bg-gray-800'>
       {({ open }) => (
         <>
@@ -54,19 +60,22 @@ const Nav: React.FC<Props> = (props) => {
                 <div className='hidden sm:ml-6 sm:block'>
                   <div className='flex space-x-4'>
                     {navigation.map((item) => (
-                      <a
+                      <p
                         key={item.name}
-                        href={item.href}
                         className={classNames(
                           item.current
                             ? 'bg-gray-900 text-white'
                             : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'px-3 py-2 rounded-md text-sm font-medium'
                         )}
-                        aria-current={item.current ? 'page' : undefined}
                       >
-                        {item.name}
-                      </a>
+                        <Link
+                          href={item.href}
+                          aria-current={item.current ? 'page' : undefined}
+                        >
+                          {item.name}
+                        </Link>
+                      </p>
                     ))}
                   </div>
                 </div>
@@ -74,10 +83,11 @@ const Nav: React.FC<Props> = (props) => {
               <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
                 <button
                   type='button'
-                  className='rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                  className='flex w-32 justify-around rounded-md bg-indigo-500 p-1 text-gray-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
                   onClick={props.clickAddIdea}
                 >
-                  <span className='sr-only'>New idea</span>
+                  <span>new idea</span>
+
                   <PlusIcon className='h-6 w-6' aria-hidden='true' />
                 </button>
 
@@ -89,7 +99,7 @@ const Nav: React.FC<Props> = (props) => {
                       <div className='h-8 w-8 rounded-full'>
                         <Image
                           className='rounded-full'
-                          src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+                          src={dbUser.picture ?? ''}
                           alt=''
                           layout='fill'
                         />
@@ -148,7 +158,7 @@ const Nav: React.FC<Props> = (props) => {
         </>
       )}
     </Disclosure>
-  );
+  ) : null;
 };
 
 export default Nav;

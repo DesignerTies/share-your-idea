@@ -24,7 +24,7 @@ const formSubmit = async (nameVal: string, auth0UserId: string, role: Role) => {
     }),
   ])
     .then((values) => console.log(values))
-    .catch((e) => console.log(e))
+    .catch((e) => alert(e))
     .finally(() => window.location.assign('/'));
 };
 
@@ -40,9 +40,6 @@ const Registration: NextPage = () => {
 
   if (user) {
     if (!dbUser) {
-      {
-        console.log(dbUser);
-      }
       return (
         <div>
           <form

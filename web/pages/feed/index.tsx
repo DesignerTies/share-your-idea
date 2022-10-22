@@ -2,14 +2,14 @@ import axios from 'axios';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useUser } from '@auth0/nextjs-auth0';
-import { useState, useEffect } from 'react';
-import NavBar from '../../components/NavBar';
+import { useState, useEffect, useContext } from 'react';
 import Nav from '../../components/Nav';
 import StartupModal from '../../components/StartUpModal';
 import { StartUp } from '../../types';
 import { useRouter } from 'next/router';
 import useDBUser from '../../hooks/useDBUser';
 import List from '../../components/List';
+import DBUserContext from '../../context/DBUserContext';
 
 const Feed: NextPage = () => {
   const [showModal, setShowModal] = useState<string>();
@@ -18,6 +18,7 @@ const Feed: NextPage = () => {
   const [error, setError] = useState<boolean>();
   const { user, error: userError, isLoading } = useUser();
   const { dbUser, isError, isLoading: dbUserLoading } = useDBUser();
+  const DBUser = useContext(DBUserContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,7 +54,11 @@ const Feed: NextPage = () => {
                 allStartups={allStartups}
               />
             )}
-            {allStartups && <List startUps={allStartups} />}
+            {allStartups?.length !== 0 ? (
+              <List startUps={allStartups as StartUp[]} />
+            ) : (
+              <p className='text-center my-7'>Geen startups gevonden...</p>
+            )}
           </div>
         </>
       );
