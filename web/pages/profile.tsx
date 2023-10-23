@@ -14,15 +14,11 @@ function Profile() {
 
   if (user) {
     if (dbUser) {
-      return dbUser?.primaryRole ? (
-        <div className='flex h-52 flex-col'>
-          <h1>{user.name}</h1>
-          <h3>User role: {dbUser.primaryRole}</h3>
-          <a href='/api/auth/logout'>Log uit</a>
-        </div>
-      ) : (
-        <div>Geen rol gevonden</div>
-      );
+      <div className='flex h-52 flex-col'>
+        <h1>{user.name}</h1>
+        <h3>User role: {dbUser.primaryRole}</h3>
+        <a href='/api/auth/logout'>Log uit</a>
+      </div>;
     } else if (!dbUser && isError) {
       window.location.assign('/registration');
       return null;

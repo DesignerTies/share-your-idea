@@ -17,12 +17,11 @@ const Feed: NextPage = () => {
   const [dataLoading, setDataLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>();
   const { user, error: userError, isLoading } = useUser();
-  const { dbUser, isError, isLoading: dbUserLoading } = useDBUser();
   const DBUser = useContext(DBUserContext);
   const router = useRouter();
 
   useEffect(() => {
-    if (!user || !dbUser) return;
+    if (!user || !DBUser) return;
     setDataLoading(true);
     axios
       .get('/api/v1/all-startups')
@@ -31,14 +30,13 @@ const Feed: NextPage = () => {
         setError(err);
       })
       .finally(() => setDataLoading(false));
-  }, [user, dbUser]);
+  }, [user, DBUser]);
 
-  if (isLoading || dataLoading || dbUserLoading) return <div>Laden...</div>;
-  if (error || userError || (isError && !dbUser))
-    return <div>Er is een error</div>;
+  if (isLoading || dataLoading) return <div>Laden...</div>;
+  if (error || userError) return <div>Er is een error</div>;
 
   if (user) {
-    if (dbUser) {
+    if (DBUser) {
       return (
         <>
           <Head>
@@ -50,7 +48,7 @@ const Feed: NextPage = () => {
             {showModal && (
               <StartupModal
                 clickModal={() => setShowModal(undefined)}
-                userId={dbUser?.auth0Id as string}
+                userId={DBUser?.auth0Id as string}
                 allStartups={allStartups}
               />
             )}
